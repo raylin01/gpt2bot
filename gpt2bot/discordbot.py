@@ -17,8 +17,16 @@ import discord
 from model import download_model_folder, download_reverse_model_folder, load_model
 from decoder import generate_response
 
+from flask import Flask
+app = Flask(__name__)
+
+@app.route('/')
+def hello_world():
+    return 'Hello, World!'
+
 #room codes
 gpt_chat = 719063737448923179
+chat_42 = 719260820047134735
 
 client = discord.Client()
 config = ""
@@ -116,6 +124,7 @@ def main():
     #bot.run_chat()
     #client.loop.create_task(my_background_task())
     client.run(config.get('chatbot', 'discord_token'))
+    app.run(debug=True, port=5000)
 
 @client.event
 async def on_message(message): #when someone sends a message
