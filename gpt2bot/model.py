@@ -21,17 +21,17 @@ logger = logging.getLogger(__name__)
 CONFIG_FILE = {
     'small': 'https://convaisharables.blob.core.windows.net/lsp/117M/config.json',
     'medium': 'https://convaisharables.blob.core.windows.net/lsp/345M/config.json',
-    'large': 'https://raw.githubusercontent.com/microsoft/DialoGPT/blob/master/configs/762M/config.json'
+    'large': 'https://raw.githubusercontent.com/microsoft/DialoGPT/master/configs/762M/config.json'
 }
 VOCAB_FILE = {
     'small': 'https://convaisharables.blob.core.windows.net/lsp/117M/vocab.json',
     'medium': 'https://convaisharables.blob.core.windows.net/lsp/345M/vocab.json',
-    'large': 'https://raw.githubusercontent.com/microsoft/DialoGPT/blob/master/configs/762M/vocab.json'
+    'large': 'https://raw.githubusercontent.com/microsoft/DialoGPT/master/configs/762M/vocab.json'
 }
 MERGE_FILE = {
     'small': 'https://convaisharables.blob.core.windows.net/lsp/117M/merges.txt',
     'medium': 'https://convaisharables.blob.core.windows.net/lsp/345M/merges.txt',
-    'large': 'https://raw.githubusercontent.com/DialoGPT/blob/master/configs/762M/merges.txt'
+    'large': 'https://raw.githubusercontent.com/DialoGPT/master/configs/762M/merges.txt'
 }
 
 # Model files
