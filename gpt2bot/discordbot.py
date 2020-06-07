@@ -30,6 +30,25 @@ mmi_tokenizer=""
 
 # https://github.com/python-telegram-bot/python-telegram-bot/wiki/Code-snippets
 
+def requests_retry_session(
+    retries=3,
+    backoff_factor=0.3,
+    status_forcelist=(500, 502, 504),
+    session=None,
+):
+    session = session or requests.Session()
+    retry = Retry(
+        total=retries,
+        read=retries,
+        connect=retries,
+        backoff_factor=backoff_factor,
+        status_forcelist=status_forcelist,
+    )
+    adapter = HTTPAdapter(max_retries=retry)
+    session.mount('http://', adapter)
+    session.mount('https://', adapter)
+    return session
+
 def translate_message_to_gif(message, config):
     # https://engineering.giphy.com/contextually-aware-search-giphy-gets-work-specific/
     params = {
