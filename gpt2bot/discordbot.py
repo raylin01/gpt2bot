@@ -24,11 +24,7 @@ from queue import Queue
 print_lock = threading.Lock()
 
 from flask import Flask
-app = Flask(__name__)
 
-@app.route('/')
-def hello_world():
-    return 'Hello, World!'
 
 #room codes
 gpt_chat = 719063737448923179
@@ -50,10 +46,11 @@ class MyThread(threading.Thread):
         threading.Thread.__init__(self, args=(), kwargs=None)
         self.queue = queue
         self.daemon = True
+        self.token = token
 
     def run(self):
         print (threading.currentThread().getName())
-        client.run(token)
+        client.run(self.token)
         val = self.queue.get()
         self.do_thing_with_message(val)
 
@@ -149,7 +146,13 @@ def main():
     q = Queue()
     t = MyThread(q,config.get('chatbot', 'discord_token'))
     t.start()
+    app = Flask(__name__)
     app.run(debug=True, port=80)
+
+
+@app.route('/')
+def hello_world():
+    return 'Hello, World!'
 
 @client.event
 async def on_message(message): #when someone sends a message
