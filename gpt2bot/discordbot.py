@@ -10,6 +10,7 @@ from urllib.parse import urlencode
 import requests
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
+from functools import partial
 import random
 import re
 import discord
@@ -17,7 +18,7 @@ import discord
 from model import download_model_folder, download_reverse_model_folder, load_model
 from decoder import generate_response
 
-import threading
+from threading import Thread
 import time 
 from queue import Queue
 
@@ -27,6 +28,8 @@ from flask_ngrok import run_with_ngrok
 from flask import Flask
 app = Flask(__name__)
 run_with_ngrok(app)   #starts ngrok when the app is run
+partial_run = partial(app.run)
+
 
 #room codes
 gpt_chat = 719063737448923179
@@ -41,24 +44,6 @@ mmi_model= ""
 mmi_tokenizer=""
 
 # https://github.com/python-telegram-bot/python-telegram-bot/wiki/Code-snippets
-
-# Python thread
-class MyThread(threading.Thread):
-    def __init__(self, queue, token, args=(), kwargs=None):
-        threading.Thread.__init__(self, args=(), kwargs=None)
-        self.queue = queue
-        self.daemon = True
-        self.token = token
-
-    async def run(self):
-        print (threading.currentThread().getName())
-        await client.start(self.token)
-        val = self.queue.get()
-        self.do_thing_with_message(val)
-
-    def do_thing_with_message(self, message):
-        with print_lock:
-            print (threading.currentThread().getName(), "Received {}".format(message))
 
 def requests_retry_session(
     retries=3,
@@ -145,10 +130,9 @@ def main():
     #bot = TelegramBot(model, tokenizer, config, mmi_model=mmi_model, mmi_tokenizer=mmi_tokenizer)
     #bot.run_chat()
     #client.loop.create_task(my_background_task())
-    q = Queue()
-    t = MyThread(q,config.get('chatbot', 'discord_token'))
+    t = Thread(target=partial_run)
     t.start()
-    app.run()
+    client.run(config.get('chatbot', 'discord_token'))
 
 
 @app.route('/')
