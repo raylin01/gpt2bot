@@ -24,7 +24,7 @@ from queue import Queue
 print_lock = threading.Lock()
 
 from flask import Flask
-
+app = Flask(__name__)
 
 #room codes
 gpt_chat = 719063737448923179
@@ -146,7 +146,6 @@ def main():
     q = Queue()
     t = MyThread(q,config.get('chatbot', 'discord_token'))
     t.start()
-    app = Flask(__name__)
     app.run(debug=True, port=80)
 
 
