@@ -17,6 +17,12 @@ import discord
 from model import download_model_folder, download_reverse_model_folder, load_model
 from decoder import generate_response
 
+import threading
+import time 
+from Queue import Queue
+
+print_lock = threading.Lock()
+
 from flask import Flask
 app = Flask(__name__)
 
@@ -37,6 +43,25 @@ mmi_model= ""
 mmi_tokenizer=""
 
 # https://github.com/python-telegram-bot/python-telegram-bot/wiki/Code-snippets
+
+# Python thread
+class MyThread(threading.Thread):
+    def __init__(self, queue, token, args=(), kwargs=None):
+        threading.Thread.__init__(self, args=(), kwargs=None)
+        self.queue = queue
+        self.daemon = True
+        self.receive_messages = args[0]
+        client.run(token)
+
+    def run(self):
+        print threading.currentThread().getName(), self.receive_messages
+        val = self.queue.get()
+        self.do_thing_with_message(val)
+
+    def do_thing_with_message(self, message):
+        if self.receive_messages:
+            with print_lock:
+                print threading.currentThread().getName(), "Received {}".format(message)
 
 def requests_retry_session(
     retries=3,
@@ -123,7 +148,9 @@ def main():
     #bot = TelegramBot(model, tokenizer, config, mmi_model=mmi_model, mmi_tokenizer=mmi_tokenizer)
     #bot.run_chat()
     #client.loop.create_task(my_background_task())
-    client.run(config.get('chatbot', 'discord_token'))
+    q = Queue()
+    t = MyThread(q,config.get('chatbot', 'discord_token'))
+    t.start()
     app.run(debug=True, port=5000)
 
 @client.event
