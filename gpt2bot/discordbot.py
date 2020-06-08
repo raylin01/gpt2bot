@@ -50,7 +50,7 @@ class MyThread(threading.Thread):
         threading.Thread.__init__(self, args=(), kwargs=None)
         self.queue = queue
         self.daemon = True
-        client.run(token)
+        #client.run(token)
 
     def run(self):
         print (threading.currentThread().getName())
