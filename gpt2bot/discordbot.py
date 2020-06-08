@@ -22,8 +22,6 @@ from threading import Thread
 import time 
 from queue import Queue
 
-print_lock = threading.Lock()
-
 from flask_ngrok import run_with_ngrok
 from flask import Flask
 app = Flask(__name__)
