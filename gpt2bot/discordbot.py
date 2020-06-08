@@ -14,6 +14,7 @@ from functools import partial
 import random
 import re
 import discord
+from discord import Webhook, RequestsWebhookAdapter
 
 from model import download_model_folder, download_reverse_model_folder, load_model
 from decoder import generate_response
@@ -24,6 +25,8 @@ from queue import Queue
 
 from flask_ngrok import run_with_ngrok
 from flask import Flask
+from flask import request
+
 app = Flask(__name__)
 run_with_ngrok(app)   #starts ngrok when the app is run
 partial_run = partial(app.run)
@@ -32,6 +35,9 @@ partial_run = partial(app.run)
 #room codes
 gpt_chat = 719063737448923179
 chat_42 = 719260820047134735
+
+# webhooks
+webhook_george = Webhook.partial(719428372505296958, 'D2hS4XA5h9_77ukbTaVzgGZhz2AcgTX1RBKWbDvB3YoJUM9Bq6FzOotC4cIaT305CtvX', adapter=RequestsWebhookAdapter())
 
 client = discord.Client()
 config = ""
@@ -135,6 +141,9 @@ def main():
 
 @app.route('/')
 def hello_world():
+    data = request.data
+    print(data)
+    webhook_george.send('Testing Yeet', username='WEBHOOK_BOT')
     return 'Hello, World!'
 
 @client.event
