@@ -50,9 +50,9 @@ class MyThread(threading.Thread):
         self.daemon = True
         self.token = token
 
-    def run(self):
+    async def run(self):
         print (threading.currentThread().getName())
-        client.start(self.token)
+        await client.start(self.token)
         val = self.queue.get()
         self.do_thing_with_message(val)
 
@@ -148,7 +148,7 @@ def main():
     q = Queue()
     t = MyThread(q,config.get('chatbot', 'discord_token'))
     t.start()
-    app.run(debug=True, port=80)
+    app.run()
 
 
 @app.route('/')
