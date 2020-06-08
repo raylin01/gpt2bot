@@ -150,7 +150,7 @@ def flask_new_user():
 def flask_on_message():
     data = request.args
     webhook_user.send(data['message'], username=data['user'])
-    message_to_send = discord_message(message)
+    message_to_send = discord_message(data['message'])
     webhook_george.send(message_to_send, username='GeorgeTheBot')
     return message_to_send
 
