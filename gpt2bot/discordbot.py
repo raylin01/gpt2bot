@@ -146,6 +146,7 @@ def main():
 def flask_new_user():
     data = request.args
     webhook_george.send("Done chatting with: " + data['user'], username='GeorgeTheBot')
+    discord_message("Bye")
     return 'Updated User'
 
 @app.route('/onmessage')
