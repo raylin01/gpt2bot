@@ -19,7 +19,7 @@ from decoder import generate_response
 
 import threading
 import time 
-from Queue import Queue
+from queue import Queue
 
 print_lock = threading.Lock()
 
