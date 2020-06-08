@@ -54,7 +54,7 @@ class MyThread(threading.Thread):
         client.run(token)
 
     def run(self):
-        print threading.currentThread().getName(), self.receive_messages
+        print (threading.currentThread().getName(), self.receive_messages)
         val = self.queue.get()
         self.do_thing_with_message(val)
 
