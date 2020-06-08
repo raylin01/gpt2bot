@@ -50,13 +50,12 @@ class MyThread(threading.Thread):
         threading.Thread.__init__(self, args=(), kwargs=None)
         self.queue = queue
         self.daemon = True
-        #
 
     def run(self):
         print (threading.currentThread().getName())
+        client.run(token)
         val = self.queue.get()
         self.do_thing_with_message(val)
-        client.run(token)
 
     def do_thing_with_message(self, message):
         with print_lock:
@@ -150,7 +149,7 @@ def main():
     q = Queue()
     t = MyThread(q,config.get('chatbot', 'discord_token'))
     t.start()
-    app.run(debug=True, port=5000)
+    app.run(debug=True, port=80)
 
 @client.event
 async def on_message(message): #when someone sends a message
