@@ -143,7 +143,7 @@ def main():
 def hello_world():
     data = request.args
     print(data)
-    webhook_george.send(data.user, username='GeorgeTheBot')
+    webhook_george.send(data['user'], username='GeorgeTheBot')
     return 'Updated User'
 
 @client.event
