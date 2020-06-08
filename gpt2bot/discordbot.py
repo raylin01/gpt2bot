@@ -50,12 +50,13 @@ class MyThread(threading.Thread):
         threading.Thread.__init__(self, args=(), kwargs=None)
         self.queue = queue
         self.daemon = True
-        #client.run(token)
+        #
 
     def run(self):
         print (threading.currentThread().getName())
         val = self.queue.get()
         self.do_thing_with_message(val)
+        client.run(token)
 
     def do_thing_with_message(self, message):
         with print_lock:
