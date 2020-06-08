@@ -38,6 +38,7 @@ chat_42 = 719260820047134735
 
 # webhooks
 webhook_george = Webhook.partial(719428372505296958, 'D2hS4XA5h9_77ukbTaVzgGZhz2AcgTX1RBKWbDvB3YoJUM9Bq6FzOotC4cIaT305CtvX', adapter=RequestsWebhookAdapter())
+webhook_user = Webhook.partial(719428467103629342, 'etl6AYTwkHg33tX2gogujpRHcjK9KIdHAF5r8SDg3v6ukHiLyP9-OEdUBD0ja9zOi-ML', adapter=RequestsWebhookAdapter())
 
 client = discord.Client()
 config = ""
@@ -142,17 +143,24 @@ def main():
 @app.route('/newuser')
 def hello_world():
     data = request.args
-    print(data)
-    webhook_george.send(data['user'], username='GeorgeTheBot')
+    webhook_george.send("New chat with: " + data['user'], username='GeorgeTheBot')
     return 'Updated User'
+
+@app.route('/onmessage')
+def hello_world():
+    data = request.args
+    webhook_user.send(data['message'], username=data['user'])
+    message_to_send = discord_message(message)
+    webhook_george.send(message_to_send, username='GeorgeTheBot')
+    return message_to_send
 
 @client.event
 async def on_message(message): #when someone sends a message
     if message.channel.id == gpt_chat and message.author != client.user:
         #await message.channel.send("test on message") #send a good morning message
-        await discord_message(message)
+        await message.channel.send(discord_message(message.content))
 
-async def discord_message(message):
+def discord_message(message):
     global config
     global context
     # Parse parameters
@@ -162,12 +170,11 @@ async def discord_message(message):
         context['turns'] = []
     turns = context['turns']
 
-    user_message = message.content
+    user_message = message
     if user_message.lower() == 'bye':
         # Restart chat
         context['turns'] = []
-        await message.channel.send("Bye")
-        return None
+        return "Bye"
     return_gif = False
     if '@gif' in user_message:
         # Return gif
@@ -214,10 +221,10 @@ async def discord_message(message):
     if return_gif:
         # Return response as GIF
         gif_url = translate_message_to_gif(bot_message, config)
-        await message.channel.send(gif_url)
+        return gif_url
     else:
         # Return response as text
         #update.message.reply_text(bot_message)
-        await message.channel.send(bot_message)
+        return bot_message
 if __name__ == '__main__':
     main()
