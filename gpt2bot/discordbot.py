@@ -23,8 +23,10 @@ from queue import Queue
 
 print_lock = threading.Lock()
 
+from flask_ngrok import run_with_ngrok
 from flask import Flask
 app = Flask(__name__)
+run_with_ngrok(app)   #starts ngrok when the app is run
 
 #room codes
 gpt_chat = 719063737448923179
@@ -50,7 +52,7 @@ class MyThread(threading.Thread):
 
     def run(self):
         print (threading.currentThread().getName())
-        client.run(self.token)
+        client.start(self.token)
         val = self.queue.get()
         self.do_thing_with_message(val)
 
