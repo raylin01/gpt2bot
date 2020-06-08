@@ -141,13 +141,13 @@ def main():
 
 
 @app.route('/newuser')
-def hello_world():
+def flask_new_user():
     data = request.args
     webhook_george.send("New chat with: " + data['user'], username='GeorgeTheBot')
     return 'Updated User'
 
 @app.route('/onmessage')
-def hello_world():
+def flask_on_message():
     data = request.args
     webhook_user.send(data['message'], username=data['user'])
     message_to_send = discord_message(message)
