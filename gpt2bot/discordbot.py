@@ -61,7 +61,7 @@ class MyThread(threading.Thread):
     def do_thing_with_message(self, message):
         if self.receive_messages:
             with print_lock:
-                print threading.currentThread().getName(), "Received {}".format(message)
+                print (threading.currentThread().getName(), "Received {}".format(message))
 
 def requests_retry_session(
     retries=3,
