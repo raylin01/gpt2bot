@@ -143,7 +143,7 @@ def main():
 @app.route('/newuser')
 def flask_new_user():
     data = request.args
-    webhook_george.send("New chat with: " + data['user'], username='GeorgeTheBot')
+    webhook_george.send("Done chatting with: " + data['user'], username='GeorgeTheBot')
     return 'Updated User'
 
 @app.route('/onmessage')
