@@ -139,12 +139,12 @@ def main():
     client.run(config.get('chatbot', 'discord_token'))
 
 
-@app.route('/')
+@app.route('/newuser')
 def hello_world():
-    data = request.data
+    data = request.args
     print(data)
-    webhook_george.send('Testing Yeet', username='WEBHOOK_BOT')
-    return 'Hello, World!'
+    webhook_george.send(data.user, username='GeorgeTheBot')
+    return 'Updated User'
 
 @client.event
 async def on_message(message): #when someone sends a message
