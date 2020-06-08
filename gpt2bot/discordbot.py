@@ -50,18 +50,16 @@ class MyThread(threading.Thread):
         threading.Thread.__init__(self, args=(), kwargs=None)
         self.queue = queue
         self.daemon = True
-        self.receive_messages = args[0]
         client.run(token)
 
     def run(self):
-        print (threading.currentThread().getName(), self.receive_messages)
+        print (threading.currentThread().getName())
         val = self.queue.get()
         self.do_thing_with_message(val)
 
     def do_thing_with_message(self, message):
-        if self.receive_messages:
-            with print_lock:
-                print (threading.currentThread().getName(), "Received {}".format(message))
+        with print_lock:
+            print (threading.currentThread().getName(), "Received {}".format(message))
 
 def requests_retry_session(
     retries=3,
