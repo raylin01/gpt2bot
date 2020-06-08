@@ -26,8 +26,10 @@ from queue import Queue
 from flask_ngrok import run_with_ngrok
 from flask import Flask
 from flask import request
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 run_with_ngrok(app)   #starts ngrok when the app is run
 partial_run = partial(app.run)
 
